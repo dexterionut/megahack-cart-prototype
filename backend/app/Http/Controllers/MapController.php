@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class MapController extends Controller
 {
+    public function index(Request $request)
+    {
+        $shops = $this->getAvailableShops($request);
+        return view('map-page', ['shops' => $shops]);
+    }
+
     /**
      * Display a listing of the resource.
      *
