@@ -68,6 +68,14 @@ function initMap() {
             //     newD.p
             //
             // }
+            if (shopsType == 'single') {
+                locations = normalizeLocationSingle(locations);
+            }
+            if (shopsType == 'multiple') {
+                locations = normalizeLocationMultiple(locations);
+            }
+
+            // deseneaza markere
             for (i = 0; i < locations.length; i++) {
 
                 marker = new google.maps.Marker({
@@ -154,7 +162,56 @@ function initMap() {
 
 
 // Get distance in miles. The API returns distance in meters, and we can easily convert that with multiplication.
-function getDistanceInMiles(point_a, point_b) {
+function getDistanceInMeters(point_a, point_b) {
+    // setTimeout(function () {
     var distance_in_meters = google.maps.geometry.spherical.computeDistanceBetween(point_a, point_b);
     return distance_in_meters;
+    // }, 100);
+
+}
+
+
+// maybe?
+function normalizeLocationMultiple(locations) {
+    var copyLocations = [...locations];
+    var newLocations = [copyLocations[0]];
+    copyLocations.shift();
+    var normalized;
+    console.log(copyLocations);
+    while (copyLocations.length > 0) {
+        copyLocations = [newLocations[newLocations.length - 1], ...copyLocations];
+        normalized = normalizeLocationSingle(copyLocations);
+        newLocations.push(normalized[1]);
+        copyLocations.shift();
+        copyLocations.splice(getArrayIndexById(copyLocations, normalized[1].id), 1);
+    }
+    return newLocations;
+}
+
+function getArrayIndexById(locations, id) {
+    for (var i = 0; i < locations.length; i++) {
+        if (locations[i].id == id) {
+            return i;
+        }
+    }
+}
+
+function normalizeLocationSingle(locations) {
+
+    for (var i = 1; i < locations.length; i++) {
+        var first = new google.maps.LatLng(locations[0].latitudine, locations[0].longitudine);
+        var current = new google.maps.LatLng(locations[i].latitudine, locations[i].longitudine);
+        distance = getDistanceInMeters(first, current);
+        locations[i].distance = distance;
+    }
+
+    locations.sort(function (a, b) {
+        if (a.distance < b.distance)
+            return -1;
+        if (a.distance > b.distance)
+            return 1;
+        return 0;
+    });
+
+    return [locations[0], locations[1]];
 }
