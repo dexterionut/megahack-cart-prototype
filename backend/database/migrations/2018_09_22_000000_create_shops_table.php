@@ -18,19 +18,19 @@ class CreateShopsTable extends Migration
 
             $table->string('dealer_name');
             $table->string('city');
-            $table->string('country');
+            $table->string('county');
             $table->string('address');
             $table->string('telefon');
             $table->string('email');
-            $table->string('luni');
-            $table->string('marti');
-            $table->string('miercuri');
-            $table->string('joi');
-            $table->string('vineri');
-            $table->string('sambata');
-            $table->string('duminica');
-            $table->double('latitude', 7, 5);
-            $table->double('longitude', 7, 5);
+            $table->string('luni')->nullable();
+            $table->string('marti')->nullable();
+            $table->string('miercuri')->nullable();
+            $table->string('joi')->nullable();
+            $table->string('vineri')->nullable();
+            $table->string('sambata')->nullable();
+            $table->string('duminica')->nullable();
+            $table->double('latitudine', 7, 5);
+            $table->double('longitudine', 7, 5);
             $table->string('profil_magazin');
             $table->integer('cod_postal');
 

@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Shop;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +13,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $this->loadShops();
+    }
+
+    private function loadShops()
+    {
+        $path = storage_path('csvs/StoresList-sample.csv');
+
+        $data = Excel::load($path)->get();
+
+
+        if ($data->count()) {
+
+            foreach ($data as $key => $value) {
+                Shop::query()
+                    ->create($value->toArray());
+            }
+
+        }
     }
 }
