@@ -35,13 +35,43 @@ class MapController extends Controller
         $filteredShops = $shops->filter(function ($shop) use ($phoneIds) {
             return count($shop->phones) == count($phoneIds);
         });
-//
+
+        $final = [];
         if (count($filteredShops) == 0) {
-            $shopWithHighestCount = $this->getShopWithHighestCount($shops);
-            
+            $this->getRecursiveShops($shops, $phoneIds, $final);
+            return [
+                'type' => 'multiple',
+                'data' => $final
+            ];
+
         }
 
-        return $filteredShops;
+        return [
+            'type' => 'single',
+            'data' => $shops
+        ];
+    }
+
+    private function getRecursiveShops($shops, $phoneIds, &$final)
+    {
+        $shopWithHighestCount = $this->getShopWithHighestCount($shops);
+
+        $final = array_merge($final, [$shopWithHighestCount]);
+
+        $bigShopPhoneIds = array_pluck($shopWithHighestCount->phones, 'id');
+        $remainingPhoneIds = array_diff($phoneIds, $bigShopPhoneIds);
+
+        $shopsWithRestOfPhones = Shop::query()
+            ->with(['phones' => function ($q) use ($remainingPhoneIds) {
+                $q->whereIn('phones.id', $remainingPhoneIds);
+            }])
+            ->whereHas('phones', function ($q) use ($remainingPhoneIds) {
+                $q->whereIn('phones.id', $remainingPhoneIds);
+            })
+            ->get();
+        if (count($shopsWithRestOfPhones) > 0) {
+            $this->getRecursiveShops($shopsWithRestOfPhones, $remainingPhoneIds, $final);
+        }
     }
 
     private function getShopWithHighestCount(Collection $shops)
