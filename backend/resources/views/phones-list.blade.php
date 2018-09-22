@@ -95,7 +95,7 @@
                                     <td>{{$phone->diagonala_ecran}}</td>
                                     <td>{{$phone->camera}}</td>
                                     <td>{{$phone->memorie_interna}}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <p data-placement="top" data-toggle="tooltip" title="Adauga in cos">
                                             <button class="btn btn-primary btn-xs" data-title="Add"
                                                     data-id-phone="{{$phone->id}}" data-toggle="modal"
