@@ -51,23 +51,23 @@ function initMap() {
 
             //directionsDisplay.setMap(map);
             var newD = [];
-            for (i = 0; i < locations.length - 1; i++) {
-                minim = 9999999999;
-                minIndx = -1;
-                for (j = 0; j < locations.length; j++) {
-
-                    var previous = new google.maps.LatLng(locations[i].latitudine, locations[i].longitudine);
-                    var current = new google.maps.LatLng(locations[j].latitudine, locations[j].longitudine);
-
-                    var distance_miles = getDistanceInMiles(point_a, point_b);
-                    if (distance_miles < minim) {
-                        minim = distance_miles;
-                        minIdx = j;
-                    }
-                }
-                newD.p
-
-            }
+            // for (i = 0; i < locations.length - 1; i++) {
+            //     minim = 9999999999;
+            //     minIndx = -1;
+            //     for (j = 0; j < locations.length; j++) {
+            //
+            //         var previous = new google.maps.LatLng(locations[i].latitudine, locations[i].longitudine);
+            //         var current = new google.maps.LatLng(locations[j].latitudine, locations[j].longitudine);
+            //
+            //         var distance_miles = getDistanceInMiles(point_a, point_b);
+            //         if (distance_miles < minim) {
+            //             minim = distance_miles;
+            //             minIdx = j;
+            //         }
+            //     }
+            //     newD.p
+            //
+            // }
             for (i = 0; i < locations.length; i++) {
 
                 marker = new google.maps.Marker({
@@ -152,8 +152,6 @@ function initMap() {
 
 // google.maps.event.addDomListener(window, "load", initialize);
 
-// Show the distance, rounded to 2 decimals
-alert("The distance between point_a and point_b is: \n\n" + distance_miles.toFixed(2) + " miles");
 
 // Get distance in miles. The API returns distance in meters, and we can easily convert that with multiplication.
 function getDistanceInMiles(point_a, point_b) {
