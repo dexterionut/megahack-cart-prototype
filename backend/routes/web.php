@@ -12,3 +12,5 @@
 */
 
 Route::get('/phones', 'PhonesController@phonesList');
+Route::get('/cart', 'CartController@index');
+Route::get('/map', 'MapController@index');

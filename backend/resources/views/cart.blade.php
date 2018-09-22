@@ -62,11 +62,11 @@
 
 
                 <div class="col-md-12">
-                    <div class="text-center">
-                        <h2>Adauga un telefon in cos!</h2>
-                        <button id="view-cart" type="button" class="btn btn-info btn-lg">
-                            <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
-                        </button>
+                    <h2 class="text-center">Adauga un telefon in cos!</h2>
+                    <div class="text-left">
+                        <a id="view-cart" type="button" class="btn btn-warning btn-lg" href="/phones">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Inapoi
+                        </a>
                     </div>
 
                     <div class="table-responsive">
@@ -86,7 +86,7 @@
                             <th>Adauga</th>
                             </thead>
                             <tbody>
-                            @foreach ($phones as $phone)
+                            @forelse($phones as $phone)
                                 <tr id="phone-id-{{$phone->id}}">
                                     <td>{{$phone->nume_produs}}</td>
                                     <td>{{$phone->name}}</td>
@@ -97,21 +97,29 @@
                                     <td>{{$phone->memorie_interna}}</td>
                                     <td class="text-center">
                                         <p data-placement="top" data-toggle="tooltip" title="Adauga in cos">
-                                            <button class="btn btn-primary btn-xs" data-title="Add"
+                                            <button class="btn btn-primary btn-xs btn-danger" data-title="Add"
                                                     data-id-phone="{{$phone->id}}" data-toggle="modal"
                                                     data-target="#add">
-                                                <span class="glyphicon glyphicon-plus"></span>
+                                                <span class="glyphicon glyphicon-trash"></span>
                                             </button>
                                         </p>
                                     </td>
 
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="99999" class="text-center" style="font-size: 25px"><b>Nu ai adaugat nimic in cos</b>
+                                    </td>
+                                </tr>
+                            @endforelse
                             </tbody>
 
                         </table>
-
-                        <div class="clearfix"></div>
+                        <div class="text-right">
+                            <a id="view-cart" type="button" class="btn btn-success btn-lg" href="/phones">
+                                Vezi cel mai apropiat magazin <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
 
                     </div>
 
@@ -128,7 +136,7 @@
                     <div class="modal-body text-center">
                         <button type="button" class="btn btn-success btn-lg" style="width: 50%;">
                             <span class="glyphicon glyphicon-ok-sign"></span> 
-                            Added!
+                            Deleted!
                         </button>
                     </div>
                     {{--<div class="modal-footer ">--}}
@@ -166,6 +174,7 @@
                 <!-- /.modal-content -->
             </div>
         </div>
+
     </div>
 </div>
 </body>
@@ -173,7 +182,6 @@
 
 <script>
     $(document).ready(function () {
-        // $("[data-toggle=tooltip]").tooltip();
         var selected_phones = {};
         $('[data-title="Add"]').on('click', function () {
             var selected_phone = $(this).attr('data-id-phone');
@@ -188,34 +196,17 @@
 
             $('#add').on('shown.bs.modal', function () {
                 setTimeout(function () {
-                    $('[data-id-phone=' + selected_phone + ']').attr('disabled', 'true');
+                    var urlParams = new URLSearchParams(window.location.search);
+                    var myParam = urlParams.get('phone_ids').split(',');
+                    myParam.splice(myParam.indexOf(selected_phone), 1);
+                    myParam = myParam.join(',');
+                    var origin = window.location.origin;
+                    var url = origin + '/cart?phone_ids=' + myParam;
+                    window.location = url;
                     $('#add').modal('hide');
                 }, 1000); // milliseconds
             });
 
-        });
-
-        $('#view-cart').on('click', function () {
-            var origin = window.location.origin;
-            var phones = $.map(selected_phones, function (value, key) {
-                return key;
-            });
-
-            phones = phones.join(',');
-            var url = origin + '/cart?phone_ids=' + phones;
-            window.location = url;
-        });
-
-
-        var url = "https://www.vodafone.ro/personal/index.htm#tab-1";
-        $.ajax({
-            crossOrigin: true,
-            url: url,
-            success: function (data) {
-                var text = $(data).find('#masthead')[0];
-                // console.log(text);
-                // $('#header').html(text);
-            }
         });
 
     });

@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shop;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class MapController extends Controller
 {
+    public function index(Request $request)
+    {
+        if ($request->has('phone_ids')) {
+            $shops = $this->getAvailableShops($request);
+        } else {
+            $shops = [
+                'data' => []
+            ];
+        }
+        return view('map-page', ['shops' => $shops]);
+    }
+
     /**
      * Display a listing of the resource.
      *
