@@ -79,7 +79,9 @@
 
     <div class="content">
         <div class="title m-b-md">
-            lista boss
+            @foreach ($phones as $phone)
+                {{$phone->name}}
+            @endforeach
         </div>
 
         <div class="links">

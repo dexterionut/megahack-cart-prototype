@@ -60,8 +60,9 @@ class PhonesController extends Controller
         return $phones->get();
     }
 
-    public function phonesList()
+    public function phonesList(Request $request)
     {
-        return view('phones-list');
+        $phones = $this->index($request);
+        return view('phones-list', ['phones' => $phones]);
     }
 }
