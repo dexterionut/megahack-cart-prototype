@@ -22,8 +22,8 @@ class CreatePhonesTable extends Migration
             $table->string('name');
             $table->string('producator');
             $table->string('caracteristici_principale');
-            $table->string('diagonala_ecran');
-            $table->string('camera');
+            $table->string('diagonala_ecran')->nullable();
+            $table->string('camera')->nullable();;
             $table->string('memorie_interna');
 
             $table->integer('shop_id')->unsigned();
