@@ -40,7 +40,7 @@
 
     </style>
 </head>
-<body class="container">
+<body class="container-fluid">
 <div id="header"></div>
 <div class="flex-center position-ref full-height">
     {{--@if (Route::has('login'))--}}
@@ -108,7 +108,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="99999" class="text-center" style="font-size: 25px"><b>Nu sunt boss</b>
+                                    <td colspan="99999" class="text-center" style="font-size: 25px"><b>Nu ai adaugat nimic in cos</b>
                                     </td>
                                 </tr>
                             @endforelse

@@ -40,7 +40,7 @@
 
     </style>
 </head>
-<body class="container">
+<body class="container-fluid">
 <div id="header"></div>
 <div class="flex-center position-ref full-height">
     {{--@if (Route::has('login'))--}}
@@ -62,7 +62,7 @@
 
 
                 <div class="col-md-12">
-                    <div  class="text-center">
+                    <div class="text-center">
                         <h2>Adauga un telefon in cos!</h2>
                         <button id="view-cart" type="button" class="btn btn-info btn-lg">
                             <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
@@ -145,7 +145,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
-                                    class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                         <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
                     </div>
                     <div class="modal-body">
@@ -159,7 +159,7 @@
                         <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Yes
                         </button>
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span
-                                    class="glyphicon glyphicon-remove"></span> No
+                                class="glyphicon glyphicon-remove"></span> No
                         </button>
                     </div>
                 </div>
@@ -186,7 +186,6 @@
             $(this).find('span').removeClass('glyphicon-plus').addClass('glyphicon-ok');
 
 
-
             $('#add').on('shown.bs.modal', function () {
                 setTimeout(function () {
                     $('[data-id-phone=' + selected_phone + ']').attr('disabled', 'true');
@@ -196,8 +195,8 @@
 
         });
 
-        $('#view-cart').on('click', function(){
-            var origin   = window.location.origin;
+        $('#view-cart').on('click', function () {
+            var origin = window.location.origin;
             var phones = $.map(selected_phones, function (value, key) {
                 return key;
             });
