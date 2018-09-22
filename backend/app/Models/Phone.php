@@ -17,8 +17,8 @@ class Phone extends Model
         'shop_id'
     ];
 
-    public function shop()
+    public function shops()
     {
-        return $this->belongsTo(Shop::class, 'shop_id');
+        return $this->belongsToMany(Shop::class);
     }
 }

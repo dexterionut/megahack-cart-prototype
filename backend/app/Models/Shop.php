@@ -12,6 +12,8 @@ class Shop extends Model
      *
      * @var array
      */
+
+    protected $withCount = ['phones'];
     protected $fillable = [
         'dealer_name', 'city', 'county', 'address', 'telefon', 'email', 'luni', 'marti', 'miercuri', 'joi', 'vineri', 'sambata',
         'duminica', 'latitude', 'longitude', 'profil_magazin', 'cod_postal'
@@ -19,6 +21,6 @@ class Shop extends Model
 
     public function phones()
     {
-        return $this->hasMany(Phone::class, 'shop_id', 'id');
+        return $this->belongsToMany(Phone::class);
     }
 }

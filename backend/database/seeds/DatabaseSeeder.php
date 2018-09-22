@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Phone;
+use App\Models\PhoneShop;
 use App\Models\Shop;
 use Illuminate\Database\Seeder;
 use Maatwebsite\Excel\Facades\Excel;
@@ -54,6 +55,7 @@ class DatabaseSeeder extends Seeder
                     ->where('dealer_name', $shopName)
                     ->first();
                 $phoneData = $value->toArray();
+                $skuId = $phoneData['sku_id'];
                 unset($phoneData['disponibil_in_magazin']);
                 unset($phoneData['sku_id']);
 
@@ -67,7 +69,8 @@ class DatabaseSeeder extends Seeder
                         ->create($phoneData);
                 }
 
-                \App\Models\PhoneShop::query()->create([
+
+                PhoneShop::query()->updateOrCreate([
                     'phone_id' => $existingPhone->id,
                     'shop_id' => $shop->id,
                 ]);

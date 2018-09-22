@@ -14,13 +14,15 @@ class CreatePhoneShopTable extends Migration
     public function up()
     {
         Schema::create('phone_shop', function (Blueprint $table) {
-            $table->increments('id');
+//            $table->increments('id');
 
             $table->integer('shop_id')->unsigned();
             $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
 
             $table->integer('phone_id')->unsigned();
             $table->foreign('phone_id')->references('id')->on('phones')->onDelete('cascade');
+
+            $table->primary(['shop_id', 'phone_id']);
 
 
             $table->timestamps();

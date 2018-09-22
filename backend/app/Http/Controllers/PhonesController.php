@@ -19,7 +19,7 @@ class PhonesController extends Controller
 
 
         $phones = Phone::query()
-            ->with('shop');
+            ->with('shops');
 
         if ($request->has('nume_produs')) {
             $phones = $phones->where('nume_produs', 'like', '%' . $request->input('nume_produs') . '%');
@@ -51,12 +51,17 @@ class PhonesController extends Controller
 
         if ($request->has('shop_name')) {
             $word = $request->input('shop_name');
-            $phones = $phones->whereHas('shop', function (Builder $q) use ($word) {
+            $phones = $phones->whereHas('shops', function (Builder $q) use ($word) {
                 return $q->where('shops.dealer_name', 'like', '%' . $word . '%');
             });
         }
 
 
         return $phones->get();
+    }
+
+    public function phonesList()
+    {
+        return view('phones-list');
     }
 }

@@ -16,18 +16,34 @@ class MapController extends Controller
      */
     public function getAvailableShops(Request $request)
     {
-        if (!$request->has('sku_ids')) {
-            return response(['error' => 'No sku_ids provided'], 403);
+        if (!$request->has('phone_ids')) {
+            return response(['error' => 'No phone_ids provided'], 403);
         }
 
-        $skIds = explode(',', $request->input('sku_ids'));
+        $phoneIds = explode(',', $request->input('phone_ids'));
 
         $shops = Shop::query()
-            ->whereHas('phones', function ($q) use ($skIds) {
-                $q->whereIn('phones.sku_id', $skIds);
+            ->with(['phones' => function ($q) use ($phoneIds) {
+                $q->whereIn('phones.id', $phoneIds);
+            }])
+            ->whereHas('phones', function ($q) use ($phoneIds) {
+                $q->whereIn('phones.id', $phoneIds);
             })
             ->get();
 
-        return $shops;
+        $filteredShops = $shops->filter(function ($shop) use ($phoneIds) {
+            return count($shop->phones) == count($phoneIds);
+        });
+//
+        if (count($filteredShops) == 0) {
+            $filteredShops = $shops;
+        }
+
+        return $filteredShops;
     }
+
+//    private function getShopWithHighestCount($shops)
+//    {
+//        return $shops-
+//    }
 }
