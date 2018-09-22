@@ -19,6 +19,6 @@ class Shop extends Model
 
     public function phones()
     {
-        return $this->hasMany(Shop::class);
+        return $this->hasMany(Phone::class, 'shop_id', 'id');
     }
 }

@@ -13,6 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('phones', 'PhonesController@index');
+Route::get('map/available_shops', 'MapController@getAvailableShops');

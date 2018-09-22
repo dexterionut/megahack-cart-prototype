@@ -17,7 +17,6 @@ class CreatePhonesTable extends Migration
             $table->increments('id');
 
             $table->string('display_name');
-            $table->integer('sku_id');
             $table->string('nume_produs');
             $table->string('name');
             $table->string('producator');
@@ -25,9 +24,6 @@ class CreatePhonesTable extends Migration
             $table->string('diagonala_ecran')->nullable();
             $table->string('camera')->nullable();;
             $table->string('memorie_interna');
-
-            $table->integer('shop_id')->unsigned();
-            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
 
             $table->timestamps();
         });

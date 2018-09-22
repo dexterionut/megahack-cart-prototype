@@ -55,11 +55,23 @@ class DatabaseSeeder extends Seeder
                     ->first();
                 $phoneData = $value->toArray();
                 unset($phoneData['disponibil_in_magazin']);
-                if ($shop) {
-                    $phoneData['shop_id'] = $shop->id;
+                unset($phoneData['sku_id']);
+
+                $existingPhone = Phone::query();
+                foreach ($phoneData as $tableKey => $tableValue) {
+                    $existingPhone->where($tableKey, $tableValue);
                 }
-                Phone::query()
-                    ->create($phoneData);
+                $existingPhone = $existingPhone->first();
+                if (!$existingPhone) {
+                    $existingPhone = Phone::query()
+                        ->create($phoneData);
+                }
+
+                \App\Models\PhoneShop::query()->create([
+                    'phone_id' => $existingPhone->id,
+                    'shop_id' => $shop->id,
+                ]);
+
             }
 
         }
