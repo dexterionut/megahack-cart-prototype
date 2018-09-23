@@ -64,7 +64,7 @@
                 <div class="col-md-12">
                     <h2 class="text-center">Cos cumparaturi</h2>
                     <div class="text-left">
-                        <a id="view-cart" type="button" class="btn btn-warning btn-lg" href="/phones">
+                        <a id="goBack" type="button" class="btn btn-warning btn-lg" href="/phones">
                             <span class="glyphicon glyphicon-chevron-left"></span> Inapoi
                         </a>
                     </div>
@@ -220,6 +220,21 @@
                     myParam = myParam.join(',');
                     var origin = window.location.origin;
                     var url = origin + '/map?phone_ids=' + myParam + '&lat=' + position.coords.latitude + '&lng=' + position.coords.longitude;
+                    window.location = url;
+                });
+            }
+        })
+
+        $('#goBack').on('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+
+                    var urlParams = new URLSearchParams(window.location.search);
+                    var myParam = urlParams.get('phone_ids').split(',');
+
+                    myParam = myParam.join(',');
+                    var origin = window.location.origin;
+                    var url = origin + '/phones?phone_ids=' + myParam;
                     window.location = url;
                 });
             }
