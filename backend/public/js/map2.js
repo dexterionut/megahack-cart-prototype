@@ -9,7 +9,7 @@ function initMap() {
     });
     directionsDisplay.setMap(map);
     var request = {
-        travelMode: google.maps.TravelMode.DRIVING
+        travelMode: google.maps.TravelMode.DRIVING,
     };
 
     var locations = shops;
@@ -36,6 +36,7 @@ function initMap() {
         }
     }
     directionsService.route(request, function (result, status) {
+        console.log(result);
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(result);
         }

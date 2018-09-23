@@ -57,7 +57,7 @@ class MapController extends Controller
 
         $final = [];
         if (count($filteredShops) == 0) {
-            $this->getRecursiveShops($shops, $phoneIds, $final);
+            $this->getRecursiveShops($base['latitudine'], $base['longitudine'], $shops, $phoneIds, $final);
             $f = $this->normalizeMultiple($base['latitudine'], $base['longitudine'], $final);
             return [
                 'type' => 'multiple',
@@ -72,9 +72,9 @@ class MapController extends Controller
         ];
     }
 
-    private function getRecursiveShops($shops, $phoneIds, &$final)
+    private function getRecursiveShops($lat, $lng, $shops, $phoneIds, &$final)
     {
-        $shopWithHighestCount = $this->getShopWithHighestCount($shops);
+        $shopWithHighestCount = $this->getShopWithHighestCount($lat, $lng, $shops);
 
         $final = array_merge($final, [$shopWithHighestCount]);
 
@@ -90,15 +90,18 @@ class MapController extends Controller
             })
             ->get();
         if (count($shopsWithRestOfPhones) > 0) {
-            $this->getRecursiveShops($shopsWithRestOfPhones, $remainingPhoneIds, $final);
+            $this->getRecursiveShops($shopWithHighestCount->latitudine, $shopWithHighestCount->longitudine, $shopsWithRestOfPhones, $remainingPhoneIds, $final);
         }
     }
 
-    private function getShopWithHighestCount(Collection $shops)
+    private function getShopWithHighestCount($lat, $lng, Collection $shops)
     {
-        return $shops->sortBy(function ($el) {
+        $groupedByCounts = $shops->groupBy(function ($el) {
             return count($el->phones);
-        })[0];
+        });
+        $maxCount = max(array_keys($groupedByCounts->toArray()));
+        $shopsWithMaxCount = $groupedByCounts[$maxCount];
+        return $this->normalizeSingle($lat, $lng, $shopsWithMaxCount);
     }
 
     private function distance(
