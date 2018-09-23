@@ -47,9 +47,14 @@
 </head>
 
 <body>
-<div id="right-panel">
+<div id="right-panel" style="max-height: 100vh;overflow: scroll;">
     <div class="text-center">
         <h2><strong>Distances</strong></h2>
+        <div class="text-left">
+            <button id="back-to-cart" type="button" class="btn btn-warning btn-lg">
+                <span class="glyphicon glyphicon-chevron-left"></span> Inapoi
+            </button>
+        </div>
     </div>
 
     <table id="mytable" class="table table-bordred table-striped">
@@ -58,26 +63,36 @@
 
         <th>Punct pe harta</th>
         <th>Denumire magazin</th>
-        <th>Adresa</th>
-        <th>Program</th>
+        <th width="50">Adresa</th>
+        <th width="150">Program</th>
         </thead>
         <tbody>
         @foreach($shops['data'] as $key => $shop)
             @if(!isset($shop['id']))
                 <tr>
-                    <td>{{$alphabet[$key]}}</td>
+                    <td><h3>{{$alphabet[$key]}}</h3></td>
                     <td colspan="999" class="">Locatia curenta</td>
                 </tr>
             @else
                 <tr>
-                    <td>{{$alphabet[$key]}}</td>
-                    <td>{{$shop['dealer_name']}}</td>
+                    <td>
+                        <h3>{{$alphabet[$key]}}</h3>
+                    </td>
+                    <td>
+                        <p>{{$shop['dealer_name']}}</p>
+                        <p><strong>Telefon:</strong><br>{{$shop['telefon']}}</p>
+                        <p><strong>Email: </strong><br>{{$shop['email']}}</p><br>
+                        <h4><strong><u>Telefoanele din locatia {{$alphabet[$key]}}:</u></strong></h4>
+                        @foreach($shop['phones'] as $phone)
+                            <p>{{$phone['name']}}</p>
+                        @endforeach
+
+                    </td>
                     <td>
                         <p><strong>Oras:</strong><br> {{$shop['city']}}</p>
                         <p><strong>Judet:</strong><br> {{$shop['county']}}</p>
                         <p><strong>Adresa:</strong><br> {{$shop['address']}}</p>
-                        <p><strong>Telefon:</strong><br>{{$shop['telefon']}}</p>
-                        <p><strong>Email: </strong><br>{{$shop['email']}}</p>
+
                     </td>
                     <td>
                         <p><strong>Luni:</strong><br> {{$shop['luni']}}</p>
@@ -120,11 +135,29 @@
     <script>
         var shops = {!! isset($shops['data']) ? json_encode($shops['data']) : json_encode([]) !!};
         var shopsType = {!! json_encode($shops['type']) !!};
+
+
+        $('#back-to-cart').on('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+
+                    var urlParams = new URLSearchParams(window.location.search);
+                    var myParam = urlParams.get('phone_ids').split(',');
+
+                    myParam = myParam.join(',');
+                    var origin = window.location.origin;
+                    var url = origin + '/cart?phone_ids=' + myParam;
+                    window.location = url;
+                });
+            }
+        })
     </script>
     <script src="./js/map2.js"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBg9gmYPF8l0gIW9FGOdLpqH4LvUByYbTQ&libraries=geometry&callback=initMap"
         async defer></script>
+
+
 </footer>
 
 </html>

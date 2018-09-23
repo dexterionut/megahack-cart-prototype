@@ -62,7 +62,7 @@
 
 
                 <div class="col-md-12">
-                    <h2 class="text-center">Adauga un telefon in cos!</h2>
+                    <h2 class="text-center">Cos cumparaturi</h2>
                     <div class="text-left">
                         <a id="view-cart" type="button" class="btn btn-warning btn-lg" href="/phones">
                             <span class="glyphicon glyphicon-chevron-left"></span> Inapoi
