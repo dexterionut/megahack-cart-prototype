@@ -175,7 +175,6 @@
     $(document).ready(function () {
         // $("[data-toggle=tooltip]").tooltip();
         var selected_phones = {};
-        initialCheck();
         $('[data-title="Add"]').on('click', function () {
             var selected_phone = $(this).attr('data-id-phone');
             if (!(selected_phone in selected_phones)) {
@@ -219,25 +218,8 @@
             }
         });
 
-        function initialCheck(){
-            var urlParams = new URLSearchParams(window.location.search);
-            selected_phones = urlParams.get('phone_ids').split(',');
-            console.log(selected_phones);
-            for (var i=0; i<selected_phones.length; i++){
-                $('[data-id-phone="' + selected_phones[i] +'"] span').removeClass('glyphicon-plus').addClass('glyphicon-ok');
-
-                $('[data-id-phone=' + selected_phones[i] + ']').attr('disabled', 'true');
-            }
-
-            //
-            // $('#add').on('shown.bs.modal', function () {
-            //     setTimeout(function () {
-            //         $('[data-id-phone=' + selected_phone + ']').attr('disabled', 'true');
-            //         $('#add').modal('hide');
-            //     }, 1000); // milliseconds
-            // });
-
-        }
-
     });
+</script>
+<script>
+    window.open("https://maps.google.com/maps?daddr=<lat>,<long>&amp;ll=");
 </script>
