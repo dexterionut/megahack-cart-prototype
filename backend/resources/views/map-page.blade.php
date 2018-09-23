@@ -48,10 +48,53 @@
 
 <body>
 <div id="right-panel">
-    <div>
-        <strong>Distances</strong>
+    <div class="text-center">
+        <h2><strong>Distances</strong></h2>
     </div>
-    <div id="output"></div>
+
+    <table id="mytable" class="table table-bordred table-striped">
+
+        <thead>
+
+        <th>Punct pe harta</th>
+        <th>Denumire magazin</th>
+        <th>Adresa</th>
+        <th>Program</th>
+        </thead>
+        <tbody>
+        @foreach($shops['data'] as $key => $shop)
+            @if(!isset($shop['id']))
+                <tr>
+                    <td>{{$alphabet[$key]}}</td>
+                    <td colspan="999" class="">Locatia curenta</td>
+                </tr>
+            @else
+                <tr>
+                    <td>{{$alphabet[$key]}}</td>
+                    <td>{{$shop['dealer_name']}}</td>
+                    <td>
+                        <p><strong>Oras:</strong><br> {{$shop['city']}}</p>
+                        <p><strong>Judet:</strong><br> {{$shop['county']}}</p>
+                        <p><strong>Adresa:</strong><br> {{$shop['address']}}</p>
+                        <p><strong>Telefon:</strong><br>{{$shop['telefon']}}</p>
+                        <p><strong>Email: </strong><br>{{$shop['email']}}</p>
+                    </td>
+                    <td>
+                        <p><strong>Luni:</strong><br> {{$shop['luni']}}</p>
+                        <p><strong>Marti:</strong><br> {{$shop['marti']}}</p>
+                        <p><strong>Miercuri:</strong><br> {{$shop['miercuri']}}</p>
+                        <p><strong>Joi:</strong><br> {{$shop['joi']}}</p>
+                        <p><strong>Vineri:</strong><br> {{$shop['vineri']}}</p>
+                        <p><strong>Sambata:</strong><br> {{$shop['sambata']}}</p>
+                        <p><strong>Duminica:</strong><br> {{$shop['duminica']}}</p>
+                    </td>
+                </tr>
+            @endif
+        @endforeach
+        </tbody>
+
+    </table>
+
 </div>
 
 

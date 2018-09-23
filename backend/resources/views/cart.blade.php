@@ -108,7 +108,8 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="99999" class="text-center" style="font-size: 25px"><b>Nu ai adaugat nimic in cos</b>
+                                    <td colspan="99999" class="text-center" style="font-size: 25px"><b>Nu ai adaugat
+                                            nimic in cos</b>
                                     </td>
                                 </tr>
                             @endforelse
@@ -116,9 +117,9 @@
 
                         </table>
                         <div class="text-right">
-                            <a id="view-cart" type="button" class="btn btn-success btn-lg" href="/phones">
+                            <button id="goToMap" type="button" class="btn btn-success btn-lg">
                                 Vezi cel mai apropiat magazin <span class="glyphicon glyphicon-chevron-right"></span>
-                            </a>
+                            </button>
                         </div>
 
                     </div>
@@ -208,6 +209,21 @@
             });
 
         });
+
+        $('#goToMap').on('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+
+                    var urlParams = new URLSearchParams(window.location.search);
+                    var myParam = urlParams.get('phone_ids').split(',');
+
+                    myParam = myParam.join(',');
+                    var origin = window.location.origin;
+                    var url = origin + '/map?phone_ids=' + myParam + '&lat=' + position.coords.latitude + '&lng=' + position.coords.longitude;
+                    window.location = url;
+                });
+            }
+        })
 
     });
 </script>

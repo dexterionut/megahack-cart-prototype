@@ -17,7 +17,9 @@ class MapController extends Controller
                 'data' => []
             ];
         }
-        return view('map-page', ['shops' => $shops]);
+
+        $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        return view('map-page', ['shops' => $shops, 'alphabet' => $alphabet]);
     }
 
     /**
@@ -47,19 +49,26 @@ class MapController extends Controller
             return count($shop->phones) == count($phoneIds);
         });
 
+
+        $base = [
+            'latitudine' => $request->input('lat'),
+            'longitudine' => $request->input('lng')
+        ];
+
         $final = [];
         if (count($filteredShops) == 0) {
             $this->getRecursiveShops($shops, $phoneIds, $final);
+            $f = $this->normalizeMultiple($base['latitudine'], $base['longitudine'], $final);
             return [
                 'type' => 'multiple',
-                'data' => $final
+                'data' => array_merge([$base], $f)
             ];
 
         }
-
+        $f = $this->normalizeSingle($base['latitudine'], $base['longitudine'], $shops);
         return [
             'type' => 'single',
-            'data' => $shops
+            'data' => [$base, $f]
         ];
     }
 
@@ -108,5 +117,44 @@ class MapController extends Controller
 
         $angle = atan2(sqrt($a), $b);
         return $angle * $earthRadius;
+    }
+
+    private function normalizeSingle($userLat, $userLng, $shops)
+    {
+        $minShop = NULL;
+        $minDistance = 999999999;
+        foreach ($shops as $shop) {
+            $distance = $this->distance($userLat, $userLng, $shop->latitudine, $shop->longitudine);
+            if ($distance < $minDistance) {
+                $minDistance = $distance;
+                $minShop = $shop;
+            }
+        }
+        return $minShop;
+    }
+
+    private function normalizeMultiple($userLat, $userLng, $shops)
+    {
+        $shopsLen = count($shops);
+        $smalls = [
+            [
+                'latitudine' => $userLat,
+                'longitudine' => $userLng,
+            ]
+        ];
+        $nextSmall = $this->normalizeSingle($userLat, $userLng, $shops);
+        $smalls[] = $nextSmall;
+        $shops = array_filter($shops, function ($el) use ($nextSmall) {
+            return $el->id !== $nextSmall->id;
+        });
+        for ($i = 1; $i < $shopsLen; $i++) {
+            $nextSmall = $this->normalizeSingle($nextSmall->latitudine, $nextSmall->longitudine, $shops);
+            $smalls[] = $nextSmall;
+            $shops = array_filter($shops, function ($el) use ($nextSmall) {
+                return $el->id !== $nextSmall->id;
+            });
+        }
+        array_shift($smalls);
+        return $smalls;
     }
 }
